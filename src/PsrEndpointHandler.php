@@ -72,11 +72,11 @@ final readonly class PsrEndpointHandler implements EndpointHandlerInterface
     private function input(ServerRequestInterface $request): array
     {
         $parsed = $request->getParsedBody();
-        if (is_array($parsed)) {
-            return array_replace($parsed, $this->uploadedFiles($request->getUploadedFiles()));
-        }
         $contentType = strtolower($request->getHeaderLine('Content-Type'));
         $body = (string) $request->getBody();
+        if (is_array($parsed) && ($parsed !== [] || $body === '' || !str_starts_with($contentType, 'application/json'))) {
+            return array_replace($parsed, $this->uploadedFiles($request->getUploadedFiles()));
+        }
         if ($body === '' || !str_starts_with($contentType, 'application/json')) {
             return $this->uploadedFiles($request->getUploadedFiles());
         }

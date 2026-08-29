@@ -85,12 +85,15 @@ final class EndpointDispatcher implements RequestHandlerInterface
     private function secure(ResponseInterface $response): ResponseInterface
     {
         if (!$response->hasHeader('Cache-Control') && str_starts_with(strtolower($response->getHeaderLine('Content-Type')), 'application/json')) {
-            $response = $response->withHeader('Cache-Control', 'no-store');
+            $response = $response->withHeader('Cache-Control', 'no-store, private');
         }
 
-        return $response
-            ->withHeader('X-Content-Type-Options', 'nosniff')
-            ->withHeader('X-Frame-Options', 'SAMEORIGIN')
-            ->withHeader('Referrer-Policy', 'same-origin');
+        foreach (SecurityHeaders::defaults() as $name => $value) {
+            if (!$response->hasHeader($name)) {
+                $response = $response->withHeader($name, $value);
+            }
+        }
+
+        return $response;
     }
 }
