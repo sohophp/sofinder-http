@@ -1,8 +1,8 @@
 # SoFinder HTTP
 
 Framework-neutral PSR-7/PSR-17 HTTP use cases for SoFinder. It contains the
-canonical endpoint catalog, request validation, shared actions, response and
-stream results, and stable error mapping.
+canonical 52-route endpoint catalog, request validation, shared browser/API
+actions, response and stream results, and stable error mapping.
 
 ```bash
 composer require sohophp/sofinder-http:^1.0
@@ -13,8 +13,10 @@ framework. A host must register the actions required by its enabled features and
 must provide authorization, actor, workspace and CSRF implementations. Missing
 security dependencies are not treated as anonymous access.
 
-This package is a headless building block; use a full framework bridge when the
-browser page, framework DI and console integration are required.
+This package remains a framework-neutral building block. Combine it with
+`sohophp/sofinder-psr15` for the browser/API runtime on Slim, Mezzio or plain
+PHP, or use a full framework bridge when framework DI and console integration
+are required.
 
 Documentation: <https://sofinder.sohophp.app/framework-support>
 

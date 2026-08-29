@@ -46,4 +46,4 @@ jobs:
       - run: ./scripts/composer.sh audit
       - run: find src -type f -name '*.php' -print0 | xargs -0 -n1 ./scripts/php-bin.sh -l
       - run: |
-          ./scripts/php-bin.sh -r 'require "vendor/autoload.php"; exit(class_exists("SohoPHP\\SoFinder\\Http\\EndpointDispatcher") ? 0 : 1);'
+          ./scripts/php-bin.sh -r 'require "vendor/autoload.php"; exit(class_exists("SohoPHP\\SoFinder\\Http\\EndpointDispatcher") && class_exists("SohoPHP\\SoFinder\\Http\\Action\\BrowserAction") ? 0 : 1);'

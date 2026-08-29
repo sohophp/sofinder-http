@@ -23,6 +23,8 @@ use SohoPHP\SoFinder\Contract\RequestContextProviderInterface;
 use SohoPHP\SoFinder\Contract\RoleAuthorizationInterface;
 use SohoPHP\SoFinder\Contract\StorageAdapterFactoryInterface;
 use SohoPHP\SoFinder\FileManager;
+use SohoPHP\SoFinder\Feature\FeaturePolicy;
+use SohoPHP\SoFinder\Http\Action\BrowserAction;
 use SohoPHP\SoFinder\Image\GdImageProcessor;
 use SohoPHP\SoFinder\Image\HybridImageProcessor;
 use SohoPHP\SoFinder\Image\ImageFormatRegistry;
@@ -46,6 +48,7 @@ use SohoPHP\SoFinder\Trash\TrashManager;
 use SohoPHP\SoFinder\Upload\ChunkUploadManager;
 use SohoPHP\SoFinder\Upload\UploadNamePolicy;
 use SohoPHP\SoFinder\Usage\PersistentUsageTracker;
+use SohoPHP\SoFinder\Value\Theme;
 use SohoPHP\SoFinder\Workspace\DefaultWorkspaceResolver;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
@@ -170,7 +173,31 @@ final class LocalRuntime
             new MalwareScanStatusStore(rtrim((string) $c['cache_dir'], '/') . '/malware-scans.json', (int) $c['malware_scanning']['history_limit']),
             $this->packageDirectory, $c,
         );
+        $browser = new BrowserAction(new BrowserPage(
+            $files,
+            $this->endpointUrls,
+            $this->csrf,
+            $this->assetVersion(),
+            new Theme((array) $c['theme']),
+            (array) $c['ui'],
+            new FeaturePolicy((array) $c['features']),
+            $this->roles,
+            array_values(array_filter((array) $c['malware_scanning']['status_roles'], 'is_string')),
+            array_values(array_filter((array) $c['picker']['allowed_origins'], 'is_string')),
+            $workspaces,
+        ));
 
-        return $this->actions = [...$standard->all(), ...$advanced->all()];
+        return $this->actions = [$browser, ...$standard->all(), ...$advanced->all()];
+    }
+
+    private function assetVersion(): string
+    {
+        $fingerprint = hash_init('sha256');
+        foreach (['sofinder.js', 'sofinder-picker.js', 'sofinder.css'] as $file) {
+            $path = $this->packageDirectory . '/dist/' . $file;
+            if (is_file($path)) hash_update_file($fingerprint, $path);
+        }
+
+        return substr(hash_final($fingerprint), 0, 12);
     }
 }
