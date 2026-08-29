@@ -23,7 +23,6 @@ use SohoPHP\SoFinder\Contract\RequestContextProviderInterface;
 use SohoPHP\SoFinder\Contract\RoleAuthorizationInterface;
 use SohoPHP\SoFinder\Contract\StorageAdapterFactoryInterface;
 use SohoPHP\SoFinder\FileManager;
-use SohoPHP\SoFinder\Health\HealthManager;
 use SohoPHP\SoFinder\Image\GdImageProcessor;
 use SohoPHP\SoFinder\Image\HybridImageProcessor;
 use SohoPHP\SoFinder\Image\ImageFormatRegistry;
@@ -147,6 +146,15 @@ final class LocalRuntime
             $files, $resources, $pathGuard, (bool) $c['signed_urls']['enabled'], (string) $c['signed_urls']['secret'],
             (int) $c['signed_urls']['default_ttl_seconds'], (int) $c['signed_urls']['max_ttl_seconds'],
         );
+        $health = (new LocalHealthManagerFactory())->create(
+            $c,
+            $resources,
+            $imagesProcessor,
+            $formats,
+            $metrics,
+            $this->packageDirectory,
+            (string) $c['maintenance']['mode'] !== 'messenger' || $this->maintenanceDispatcher !== null,
+        );
         $assetSessions = new AssetAccessSessionManager(
             $catalog, $assetSessionsStore, $workspaces, $files, $resources, (bool) $c['asset_access_sessions']['enabled'],
             (int) $c['asset_access_sessions']['default_ttl_seconds'], (int) $c['asset_access_sessions']['max_ttl_seconds'], (int) $c['asset_access_sessions']['max_assets'],
@@ -158,7 +166,7 @@ final class LocalRuntime
             $imageManager, $references, $assetEvents, new ArchiveManager($files, $pathGuard, (string) $c['cache_dir']),
             new BoundedAssetSearchProvider($files, $catalog, (int) $c['asset_search']['max_scanned_entries']),
             $catalog, $assetUsages, $assetSessions, $previews, $previewJobs, $signed, $this->endpointUrls,
-            new HealthManager([]), $metrics,
+            $health, $metrics,
             new MalwareScanStatusStore(rtrim((string) $c['cache_dir'], '/') . '/malware-scans.json', (int) $c['malware_scanning']['history_limit']),
             $this->packageDirectory, $c,
         );
