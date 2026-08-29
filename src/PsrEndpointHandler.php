@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use SohoPHP\SoFinder\Exception\SoFinderException;
+use SohoPHP\SoFinder\Framework\ScopedRequestContextProvider;
 
 /** Converts a shared application action into the PSR-7 endpoint contract. */
 final readonly class PsrEndpointHandler implements EndpointHandlerInterface
@@ -19,6 +20,7 @@ final readonly class PsrEndpointHandler implements EndpointHandlerInterface
         private ResponseFactoryInterface $responses,
         private StreamFactoryInterface $streams,
         private PsrRequestContextFactory $contexts = new PsrRequestContextFactory(),
+        private ?ScopedRequestContextProvider $scope = null,
     ) {
         EndpointCatalog::get($action->endpoint());
     }
@@ -31,34 +33,39 @@ final readonly class PsrEndpointHandler implements EndpointHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $context = $this->contexts->create($request);
-        if ($this->action instanceof GuardedActionInterface) {
-            $parsed = $request->getParsedBody();
-            $this->action->assertAllowed($context, is_array($parsed) ? $parsed : []);
-        }
-        $result = $this->action->execute($context, $this->input($request));
-        if ($result instanceof StreamEndpointResult) {
-            $response = $this->responses->createResponse($result->status);
-            if ($result->stream !== null) {
-                $body = $this->streams->createStreamFromResource($result->stream);
-                $response = $response->withBody($result->cleanup === null ? $body : new CleanupStream($body, $result->cleanup));
-            } elseif ($result->cleanup !== null) {
-                ($result->cleanup)();
+        $this->scope?->push($context);
+        try {
+            if ($this->action instanceof GuardedActionInterface) {
+                $parsed = $request->getParsedBody();
+                $this->action->assertAllowed($context, is_array($parsed) ? $parsed : []);
             }
+            $result = $this->action->execute($context, $this->input($request));
+            if ($result instanceof StreamEndpointResult) {
+                $response = $this->responses->createResponse($result->status);
+                if ($result->stream !== null) {
+                    $body = $this->streams->createStreamFromResource($result->stream);
+                    $response = $response->withBody($result->cleanup === null ? $body : new CleanupStream($body, $result->cleanup));
+                } elseif ($result->cleanup !== null) {
+                    ($result->cleanup)();
+                }
+                foreach ($result->headers as $name => $value) {
+                    $response = $response->withHeader($name, $value);
+                }
+
+                return $response;
+            }
+            $body = $this->streams->createStream(json_encode($result->payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES));
+            $response = $this->responses->createResponse($result->status)
+                ->withHeader('Content-Type', 'application/json; charset=utf-8')
+                ->withBody($body);
             foreach ($result->headers as $name => $value) {
                 $response = $response->withHeader($name, $value);
             }
 
             return $response;
+        } finally {
+            $this->scope?->pop();
         }
-        $body = $this->streams->createStream(json_encode($result->payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES));
-        $response = $this->responses->createResponse($result->status)
-            ->withHeader('Content-Type', 'application/json; charset=utf-8')
-            ->withBody($body);
-        foreach ($result->headers as $name => $value) {
-            $response = $response->withHeader($name, $value);
-        }
-
-        return $response;
     }
 
     /** @return array<string, mixed> */
