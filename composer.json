@@ -1,0 +1,35 @@
+{
+    "name": "sohophp/sofinder-http",
+    "description": "Framework-neutral HTTP dispatcher and shared actions for SoFinder",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://sofinder.sohophp.app/",
+    "keywords": ["file-manager", "psr-7", "headless"],
+    "support": {
+        "issues": "https://github.com/sohophp/sofinder/issues",
+        "source": "https://github.com/sohophp/sofinder"
+    },
+    "require": {
+        "php": "^8.2",
+        "psr/http-factory": "^1.1",
+        "psr/http-message": "^1.1 || ^2.0",
+        "psr/http-server-handler": "^1.0",
+        "sohophp/sofinder-core": "self.version"
+    },
+    "conflict": {
+        "sohophp/sofinder-legacy": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SohoPHP\\SoFinder\\Http\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    }
+}
