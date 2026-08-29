@@ -23,15 +23,16 @@ final readonly class EntryStreamResponseBuilder
             'ETag' => $etag, 'Last-Modified' => gmdate('D, d M Y H:i:s', $entry->modifiedAt) . ' GMT', 'Cache-Control' => $cacheControl,
             'Accept-Ranges' => 'bytes', 'X-Content-Type-Options' => 'nosniff', 'Content-Security-Policy' => "default-src 'none'; sandbox",
         ];
-        if ($this->notModified($context, $etag, $entry->modifiedAt)) {
-            fclose($stream);
-            return new StreamEndpointResult(null, 304, $headers);
-        }
         $mime = $entry->mimeType ?? 'application/octet-stream';
         $requested = strtolower($disposition ?? $this->string($context->query('disposition'), 'inline'));
         $inline = $requested === 'inline' && $this->imageFormats->isWebEmbeddableMime($mime);
         $headers['Content-Type'] = $mime;
         $headers['Content-Disposition'] = ContentDisposition::make($inline ? 'inline' : 'attachment', $entry->name);
+        $headers['Content-Length'] = (string) $entry->size;
+        if ($this->notModified($context, $etag, $entry->modifiedAt)) {
+            fclose($stream);
+            return new StreamEndpointResult(null, 304, $headers);
+        }
         $start = 0; $end = max(0, $entry->size - 1); $status = 200;
         $range = $context->header('Range');
         if ($range !== '') { [$start, $end] = $this->parseRange($range, $entry->size); $status = 206; $headers['Content-Range'] = sprintf('bytes %d-%d/%d', $start, $end, $entry->size); }
