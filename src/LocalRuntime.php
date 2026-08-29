@@ -16,6 +16,7 @@ use SohoPHP\SoFinder\Asset\JsonAssetUsageStore;
 use SohoPHP\SoFinder\Contract\ActorProviderInterface;
 use SohoPHP\SoFinder\Contract\AuthorizationInterface;
 use SohoPHP\SoFinder\Contract\CsrfTokenProviderInterface;
+use SohoPHP\SoFinder\Contract\DocumentPreviewDispatcherInterface;
 use SohoPHP\SoFinder\Contract\EndpointUrlGeneratorInterface;
 use SohoPHP\SoFinder\Contract\EntryUrlGeneratorInterface;
 use SohoPHP\SoFinder\Contract\MaintenanceDispatcherInterface;
@@ -75,6 +76,7 @@ final class LocalRuntime
         private readonly string $packageDirectory,
         private readonly iterable $storageFactories = [],
         private readonly ?MaintenanceDispatcherInterface $maintenanceDispatcher = null,
+        private readonly ?DocumentPreviewDispatcherInterface $documentPreviewDispatcher = null,
     ) {
     }
 
@@ -143,7 +145,7 @@ final class LocalRuntime
         $previewJobs = new DocumentPreviewJobManager(
             $previews, $this->actor, rtrim((string) $c['cache_dir'], '/') . '/document-preview-jobs.json',
             (string) $c['document_preview']['mode'], (int) $c['document_preview']['job_ttl_seconds'],
-            (int) $c['document_preview']['cache_ttl_seconds'], metrics: $metrics,
+            (int) $c['document_preview']['cache_ttl_seconds'], dispatcher: $this->documentPreviewDispatcher, metrics: $metrics,
         );
         $signed = new SignedUrlManager(
             $files, $resources, $pathGuard, (bool) $c['signed_urls']['enabled'], (string) $c['signed_urls']['secret'],
