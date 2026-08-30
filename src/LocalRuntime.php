@@ -187,6 +187,7 @@ final class LocalRuntime
             array_values(array_filter((array) $c['malware_scanning']['status_roles'], 'is_string')),
             array_values(array_filter((array) $c['picker']['allowed_origins'], 'is_string')),
             $workspaces,
+            pickerLockResource: (bool) $c['picker']['lock_resource'],
         ));
 
         return $this->actions = [$browser, ...$standard->all(), ...$advanced->all()];

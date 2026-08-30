@@ -9,6 +9,7 @@ use SohoPHP\SoFinder\Contract\EndpointUrlGeneratorInterface;
 use SohoPHP\SoFinder\Contract\RoleAuthorizationInterface;
 use SohoPHP\SoFinder\Contract\WorkspaceOptionProviderInterface;
 use SohoPHP\SoFinder\Exception\SoFinderException;
+use SohoPHP\SoFinder\Exception\NotFoundException;
 use SohoPHP\SoFinder\Feature\FeaturePolicy;
 use SohoPHP\SoFinder\FileManager;
 use SohoPHP\SoFinder\Value\RequestContext;
@@ -36,22 +37,30 @@ final readonly class BrowserPage
         private array $pickerAllowedOrigins = [],
         private ?WorkspaceProvider $workspaces = null,
         private ?WorkspaceOptionProviderInterface $workspaceOptions = null,
+        private bool $pickerLockResource = true,
     ) {
     }
 
     public function render(RequestContext $request): string
     {
-        $this->files->resources();
+        $resources = $this->files->resources();
         $language = $this->language($request);
         $pickerRequestId = $this->pickerRequestId($this->string($request->query('pickerRequestId')));
         $selectMode = $request->query('CKEditorFuncNum') !== null || $this->boolean($request->query('select'));
         $mode = $this->enum($request, 'uiMode', ['auto', 'manager', 'picker'], (string) ($this->ui['mode'] ?? 'auto'));
         $resolvedMode = $mode === 'auto' ? ($selectMode ? 'picker' : 'manager') : $mode;
+        $resource = $this->string($request->query('type'));
+        $lockResource = $this->override($request, 'resourceLock', $this->pickerLockResource);
+        $pickerResource = $resolvedMode === 'picker' && $resource !== '' && $lockResource ? $resource : null;
+        if ($pickerResource !== null && !in_array($pickerResource, array_column($resources, 'name'), true)) {
+            throw new NotFoundException('The requested picker resource type does not exist or is not accessible.');
+        }
         $config = [
             'apiBase' => $this->urls->generate('sofinder_api_config'),
             'csrfToken' => $this->csrf->token($request),
             'language' => $language,
-            'resource' => $this->string($request->query('type')),
+            'resource' => $resource,
+            'pickerResource' => $pickerResource,
             'initialPath' => $this->safePath($this->string($request->query('path'))),
             'selectMode' => $selectMode,
             'selectionKind' => in_array($this->string($request->query('selection')), ['file', 'image'], true) ? $this->string($request->query('selection')) : 'any',
