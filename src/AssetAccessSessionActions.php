@@ -8,12 +8,12 @@ use SohoPHP\SoFinder\Http\Action\AssetSessionContentAction;
 use SohoPHP\SoFinder\Http\Action\AssetSessionCreateAction;
 use SohoPHP\SoFinder\Http\Action\AssetSessionRevokeAction;
 
-final readonly class AssetAccessSessionActions
+final class AssetAccessSessionActions
 {
     public function __construct(
-        public AssetSessionCreateAction $create,
-        public AssetSessionRevokeAction $revoke,
-        public AssetSessionContentAction $content,
+        public readonly AssetSessionCreateAction $create,
+        public readonly AssetSessionRevokeAction $revoke,
+        public readonly AssetSessionContentAction $content,
     ) {
     }
 }

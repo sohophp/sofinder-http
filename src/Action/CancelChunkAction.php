@@ -13,12 +13,12 @@ use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
-final readonly class CancelChunkAction implements MutationActionInterface
+final class CancelChunkAction implements MutationActionInterface
 {
     public function __construct(
-        private ChunkUploadStoreInterface $chunks,
-        private MutationGuard $guard,
-        private ?WorkspaceProvider $workspaces = null,
+        private readonly ChunkUploadStoreInterface $chunks,
+        private readonly MutationGuard $guard,
+        private readonly ?WorkspaceProvider $workspaces = null,
     ) {
     }
 

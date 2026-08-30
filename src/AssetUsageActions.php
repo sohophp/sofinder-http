@@ -9,13 +9,13 @@ use SohoPHP\SoFinder\Http\Action\AssetUsageListAction;
 use SohoPHP\SoFinder\Http\Action\AssetUsagePutAction;
 use SohoPHP\SoFinder\Http\Action\AssetUsageRemoveAction;
 
-final readonly class AssetUsageActions
+final class AssetUsageActions
 {
     public function __construct(
-        public AssetUsageListAction $list,
-        public AssetUsagePutAction $put,
-        public AssetUsageRemoveAction $remove,
-        public AssetDeleteCheckAction $deleteCheck,
+        public readonly AssetUsageListAction $list,
+        public readonly AssetUsagePutAction $put,
+        public readonly AssetUsageRemoveAction $remove,
+        public readonly AssetDeleteCheckAction $deleteCheck,
     ) {
     }
 }

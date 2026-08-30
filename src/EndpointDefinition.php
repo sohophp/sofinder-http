@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace SohoPHP\SoFinder\Http;
 
-final readonly class EndpointDefinition
+final class EndpointDefinition
 {
     /**
      * @param non-empty-list<string> $methods
      * @param array<string, string> $requirements
      */
     public function __construct(
-        public string $name,
-        public string $path,
-        public array $methods,
-        public array $requirements = [],
-        public bool $public = false,
+        public readonly string $name,
+        public readonly string $path,
+        public readonly array $methods,
+        public readonly array $requirements = [],
+        public readonly bool $public = false,
     ) {
         if ($name === '' || !str_starts_with($path, '/') || $methods === []) {
             throw new \InvalidArgumentException('Endpoint name, absolute path and at least one method are required.');

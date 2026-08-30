@@ -11,9 +11,9 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ContentAction implements EndpointActionInterface
+final class ContentAction implements EndpointActionInterface
 {
-    public function __construct(private FileManager $files, private EntryStreamResponseBuilder $responses = new EntryStreamResponseBuilder()) {}
+    public function __construct(private readonly FileManager $files, private readonly EntryStreamResponseBuilder $responses = new EntryStreamResponseBuilder()) {}
     public function endpoint(): string { return 'sofinder_api_content'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): StreamEndpointResult
     {

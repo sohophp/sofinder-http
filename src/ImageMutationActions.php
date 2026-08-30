@@ -7,9 +7,9 @@ namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Http\Action\ImageBatchAction;
 use SohoPHP\SoFinder\Http\Action\ImageEditAction;
 
-final readonly class ImageMutationActions
+final class ImageMutationActions
 {
-    public function __construct(public ImageEditAction $edit, public ImageBatchAction $batch)
+    public function __construct(public readonly ImageEditAction $edit, public readonly ImageBatchAction $batch)
     {
     }
 }

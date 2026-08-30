@@ -10,9 +10,9 @@ use SohoPHP\SoFinder\Image\ImageManager;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ImageInfoAction implements EndpointActionInterface
+final class ImageInfoAction implements EndpointActionInterface
 {
-    public function __construct(private ImageManager $images)
+    public function __construct(private readonly ImageManager $images)
     {
     }
 

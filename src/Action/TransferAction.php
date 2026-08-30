@@ -11,12 +11,12 @@ use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class TransferAction implements MutationActionInterface
+final class TransferAction implements MutationActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private MutationGuard $guard,
-        private string $operation,
+        private readonly FileManager $files,
+        private readonly MutationGuard $guard,
+        private readonly string $operation,
     ) {
         if (!in_array($operation, ['copy', 'move'], true)) {
             throw new \InvalidArgumentException('A transfer action operation must be copy or move.');

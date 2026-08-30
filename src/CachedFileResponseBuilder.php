@@ -7,7 +7,7 @@ namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Exception\SoFinderException;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class CachedFileResponseBuilder
+final class CachedFileResponseBuilder
 {
     /** @param array<string,string> $headers */
     public function build(RequestContext $context, string $path, string $mimeType, int $maxAge, array $headers = []): StreamEndpointResult

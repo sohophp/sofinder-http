@@ -11,9 +11,9 @@ use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class AssetUsagePutAction implements MutationActionInterface
+final class AssetUsagePutAction implements MutationActionInterface
 {
-    public function __construct(private AssetUsageService $service, private MutationGuard $guard) {}
+    public function __construct(private readonly AssetUsageService $service, private readonly MutationGuard $guard) {}
     public function endpoint(): string { return 'sofinder_api_asset_usage_put'; }
     public function assertAllowed(RequestContext $context, array $input = []): void { $this->guard->assertAllowed($context, $input); }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult

@@ -11,11 +11,11 @@ use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class TrashListAction implements EndpointActionInterface
+final class TrashListAction implements EndpointActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private FeaturePolicy $features = new FeaturePolicy(),
+        private readonly FileManager $files,
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
     ) {
     }
 

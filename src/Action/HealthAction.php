@@ -9,9 +9,9 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class HealthAction implements EndpointActionInterface
+final class HealthAction implements EndpointActionInterface
 {
-    public function __construct(private HealthManager $health)
+    public function __construct(private readonly HealthManager $health)
     {
     }
 

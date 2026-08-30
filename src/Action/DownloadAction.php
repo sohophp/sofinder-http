@@ -11,11 +11,11 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class DownloadAction implements EndpointActionInterface
+final class DownloadAction implements EndpointActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private EntryStreamResponseBuilder $responses = new EntryStreamResponseBuilder(),
+        private readonly FileManager $files,
+        private readonly EntryStreamResponseBuilder $responses = new EntryStreamResponseBuilder(),
     ) {}
     public function endpoint(): string { return 'sofinder_api_download'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): StreamEndpointResult

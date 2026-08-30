@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SohoPHP\SoFinder\Http;
 
 /** Framework-neutral streaming response; ownership of the stream transfers to the bridge. */
-final readonly class StreamEndpointResult
+final class StreamEndpointResult
 {
     /**
      * @param resource|null $stream
@@ -13,10 +13,10 @@ final readonly class StreamEndpointResult
      * @param (\Closure():void)|null $cleanup
      */
     public function __construct(
-        public mixed $stream,
-        public int $status = 200,
-        public array $headers = [],
-        public ?\Closure $cleanup = null,
+        public readonly mixed $stream,
+        public readonly int $status = 200,
+        public readonly array $headers = [],
+        public readonly ?\Closure $cleanup = null,
     ) {
         if ($stream !== null && !is_resource($stream)) {
             throw new \InvalidArgumentException('A stream endpoint result requires a stream resource or null.');

@@ -6,9 +6,9 @@ use SohoPHP\SoFinder\Http\EntryStreamResponseBuilder;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Security\SignedUrlManager;
 use SohoPHP\SoFinder\Value\RequestContext;
-final readonly class SignedContentAction implements EndpointActionInterface
+final class SignedContentAction implements EndpointActionInterface
 {
-    public function __construct(private SignedUrlManager $signedUrls, private EntryStreamResponseBuilder $responses = new EntryStreamResponseBuilder()) {}
+    public function __construct(private readonly SignedUrlManager $signedUrls, private readonly EntryStreamResponseBuilder $responses = new EntryStreamResponseBuilder()) {}
     public function endpoint(): string { return 'sofinder_signed_content'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): StreamEndpointResult
     {

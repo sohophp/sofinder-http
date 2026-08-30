@@ -10,11 +10,11 @@ use SohoPHP\SoFinder\Http\EntryStreamResponseBuilder;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class AssetSessionContentAction implements EndpointActionInterface
+final class AssetSessionContentAction implements EndpointActionInterface
 {
     public function __construct(
-        private AssetAccessSessionManager $sessions,
-        private EntryStreamResponseBuilder $responses,
+        private readonly AssetAccessSessionManager $sessions,
+        private readonly EntryStreamResponseBuilder $responses,
     ) {
     }
 

@@ -7,9 +7,9 @@ use SohoPHP\SoFinder\Http\MutationActionInterface;
 use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
-final readonly class AssetUpdateAction implements MutationActionInterface
+final class AssetUpdateAction implements MutationActionInterface
 {
-    public function __construct(private AssetService $service, private MutationGuard $guard) {}
+    public function __construct(private readonly AssetService $service, private readonly MutationGuard $guard) {}
     public function endpoint(): string { return 'sofinder_api_asset_update'; }
     public function assertAllowed(RequestContext $context, array $input = []): void { $this->guard->assertAllowed($context, $input); }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult { $this->assertAllowed($context, $input); return new EndpointResult(OperationResult::success($this->service->update($context, $this->id($context, $input), $input))->jsonSerialize()); }

@@ -9,9 +9,9 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class FrontendAssetAction implements EndpointActionInterface
+final class FrontendAssetAction implements EndpointActionInterface
 {
-    public function __construct(private string $packageDirectory, private CachedFileResponseBuilder $responses)
+    public function __construct(private readonly string $packageDirectory, private readonly CachedFileResponseBuilder $responses)
     {
     }
 

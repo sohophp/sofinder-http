@@ -11,9 +11,9 @@ use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Security\SignedUrlManager;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class SignedUrlIssueAction implements EndpointActionInterface
+final class SignedUrlIssueAction implements EndpointActionInterface
 {
-    public function __construct(private SignedUrlManager $signedUrls, private EndpointUrlGeneratorInterface $urls) {}
+    public function __construct(private readonly SignedUrlManager $signedUrls, private readonly EndpointUrlGeneratorInterface $urls) {}
     public function endpoint(): string { return 'sofinder_api_signed_url'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult
     {

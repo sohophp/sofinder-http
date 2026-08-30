@@ -11,9 +11,9 @@ use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class AssetSessionRevokeAction implements MutationActionInterface
+final class AssetSessionRevokeAction implements MutationActionInterface
 {
-    public function __construct(private AssetAccessSessionManager $sessions, private MutationGuard $guard)
+    public function __construct(private readonly AssetAccessSessionManager $sessions, private readonly MutationGuard $guard)
     {
     }
 

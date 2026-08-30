@@ -12,12 +12,12 @@ use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class RestoreTrashAction implements MutationActionInterface
+final class RestoreTrashAction implements MutationActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private MutationGuard $guard,
-        private FeaturePolicy $features = new FeaturePolicy(),
+        private readonly FileManager $files,
+        private readonly MutationGuard $guard,
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
     ) {
     }
 

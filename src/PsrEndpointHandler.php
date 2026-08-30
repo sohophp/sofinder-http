@@ -13,14 +13,14 @@ use SohoPHP\SoFinder\Exception\SoFinderException;
 use SohoPHP\SoFinder\Framework\ScopedRequestContextProvider;
 
 /** Converts a shared application action into the PSR-7 endpoint contract. */
-final readonly class PsrEndpointHandler implements EndpointHandlerInterface
+final class PsrEndpointHandler implements EndpointHandlerInterface
 {
     public function __construct(
-        private EndpointActionInterface $action,
-        private ResponseFactoryInterface $responses,
-        private StreamFactoryInterface $streams,
-        private PsrRequestContextFactory $contexts = new PsrRequestContextFactory(),
-        private ?ScopedRequestContextProvider $scope = null,
+        private readonly EndpointActionInterface $action,
+        private readonly ResponseFactoryInterface $responses,
+        private readonly StreamFactoryInterface $streams,
+        private readonly PsrRequestContextFactory $contexts = new PsrRequestContextFactory(),
+        private readonly ?ScopedRequestContextProvider $scope = null,
     ) {
         EndpointCatalog::get($action->endpoint());
     }

@@ -13,12 +13,12 @@ use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
-final readonly class ChunkStatusAction implements EndpointActionInterface
+final class ChunkStatusAction implements EndpointActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private ChunkUploadStoreInterface $chunks,
-        private ?WorkspaceProvider $workspaces = null,
+        private readonly FileManager $files,
+        private readonly ChunkUploadStoreInterface $chunks,
+        private readonly ?WorkspaceProvider $workspaces = null,
     ) {
     }
 

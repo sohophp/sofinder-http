@@ -10,9 +10,9 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class MetricsAction implements EndpointActionInterface
+final class MetricsAction implements EndpointActionInterface
 {
-    public function __construct(private MetricsStoreInterface $metrics, private HealthManager $health)
+    public function __construct(private readonly MetricsStoreInterface $metrics, private readonly HealthManager $health)
     {
     }
 

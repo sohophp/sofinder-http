@@ -9,11 +9,11 @@ use SohoPHP\SoFinder\Contract\CsrfTokenProviderInterface;
 use SohoPHP\SoFinder\Exception\AccessDeniedException;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class MutationGuard
+final class MutationGuard
 {
     public function __construct(
-        private AuthorizationInterface $authorization,
-        private CsrfTokenProviderInterface $csrf,
+        private readonly AuthorizationInterface $authorization,
+        private readonly CsrfTokenProviderInterface $csrf,
     ) {
     }
 

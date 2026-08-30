@@ -8,7 +8,7 @@ actions, response and stream results, and stable error mapping.
 composer require sohophp/sofinder-http:^1.0
 ```
 
-The package supports PHP 8.2–8.5 and depends on `sofinder-core`, not on a full
+The package supports PHP 8.1–8.5 and depends on `sofinder-core`, not on a full
 framework. A host must register the actions required by its enabled features and
 must provide authorization, actor, workspace and CSRF implementations. Missing
 security dependencies are not treated as anonymous access.

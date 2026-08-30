@@ -7,7 +7,7 @@ namespace SohoPHP\SoFinder\Http;
 use Psr\Http\Message\ServerRequestInterface;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class PsrRequestContextFactory
+final class PsrRequestContextFactory
 {
     public function create(ServerRequestInterface $request): RequestContext
     {

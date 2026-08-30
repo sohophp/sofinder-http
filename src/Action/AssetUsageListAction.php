@@ -10,9 +10,9 @@ use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class AssetUsageListAction implements EndpointActionInterface
+final class AssetUsageListAction implements EndpointActionInterface
 {
-    public function __construct(private AssetUsageService $service) {}
+    public function __construct(private readonly AssetUsageService $service) {}
     public function endpoint(): string { return 'sofinder_api_asset_usage_list'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult
     {

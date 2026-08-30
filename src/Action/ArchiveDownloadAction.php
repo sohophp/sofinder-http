@@ -13,12 +13,12 @@ use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Http\StreamingMutationActionInterface;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ArchiveDownloadAction implements StreamingMutationActionInterface
+final class ArchiveDownloadAction implements StreamingMutationActionInterface
 {
     public function __construct(
-        private ArchiveManager $archives,
-        private MutationGuard $guard,
-        private FeaturePolicy $features,
+        private readonly ArchiveManager $archives,
+        private readonly MutationGuard $guard,
+        private readonly FeaturePolicy $features,
     ) {
     }
 

@@ -59,35 +59,35 @@ use SohoPHP\SoFinder\Upload\UploadNamePolicy;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
 /** Shared construction of advanced and optional HTTP use cases. */
-final readonly class AdvancedEndpointActions
+final class AdvancedEndpointActions
 {
     /** @param array<string,mixed> $configuration */
     public function __construct(
-        private FileManager $files,
-        private AuthorizationInterface $authorization,
-        private CsrfTokenProviderInterface $csrf,
-        private RoleAuthorizationInterface $roles,
-        private ChunkUploadStoreInterface $chunks,
-        private MaintenanceCoordinator $maintenance,
-        private UploadNamePolicy $uploadNames,
-        private WorkspaceProvider $workspaces,
-        private ImageManager $images,
-        private AssetReferenceBuilder $references,
-        private AssetOperationPublisher $assetEvents,
-        private ArchiveManager $archives,
-        private AssetSearchProviderInterface $assetSearch,
-        private AssetCatalogInterface $assets,
-        private AssetUsageStoreInterface $assetUsages,
-        private AssetAccessSessionManager $assetSessions,
-        private DocumentPreviewManager $previews,
-        private DocumentPreviewJobManager $previewJobs,
-        private SignedUrlManager $signedUrls,
-        private EndpointUrlGeneratorInterface $urls,
-        private HealthManager $health,
-        private MetricsStoreInterface $metrics,
-        private MalwareScanStatusStoreInterface $malwareScans,
-        private string $packageDirectory,
-        private array $configuration,
+        private readonly FileManager $files,
+        private readonly AuthorizationInterface $authorization,
+        private readonly CsrfTokenProviderInterface $csrf,
+        private readonly RoleAuthorizationInterface $roles,
+        private readonly ChunkUploadStoreInterface $chunks,
+        private readonly MaintenanceCoordinator $maintenance,
+        private readonly UploadNamePolicy $uploadNames,
+        private readonly WorkspaceProvider $workspaces,
+        private readonly ImageManager $images,
+        private readonly AssetReferenceBuilder $references,
+        private readonly AssetOperationPublisher $assetEvents,
+        private readonly ArchiveManager $archives,
+        private readonly AssetSearchProviderInterface $assetSearch,
+        private readonly AssetCatalogInterface $assets,
+        private readonly AssetUsageStoreInterface $assetUsages,
+        private readonly AssetAccessSessionManager $assetSessions,
+        private readonly DocumentPreviewManager $previews,
+        private readonly DocumentPreviewJobManager $previewJobs,
+        private readonly SignedUrlManager $signedUrls,
+        private readonly EndpointUrlGeneratorInterface $urls,
+        private readonly HealthManager $health,
+        private readonly MetricsStoreInterface $metrics,
+        private readonly MalwareScanStatusStoreInterface $malwareScans,
+        private readonly string $packageDirectory,
+        private readonly array $configuration,
     ) {
     }
 

@@ -17,7 +17,7 @@ use SohoPHP\SoFinder\Value\Theme;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
 /** Framework-neutral browser bootstrap document and configuration policy. */
-final readonly class BrowserPage
+final class BrowserPage
 {
     /**
      * @param array<string,mixed> $ui
@@ -25,19 +25,19 @@ final readonly class BrowserPage
      * @param list<string> $pickerAllowedOrigins
      */
     public function __construct(
-        private FileManager $files,
-        private EndpointUrlGeneratorInterface $urls,
-        private CsrfTokenProviderInterface $csrf,
-        private string $assetVersion,
-        private Theme $theme,
-        private array $ui,
-        private FeaturePolicy $features = new FeaturePolicy(),
-        private ?RoleAuthorizationInterface $authorization = null,
-        private array $securityStatusRoles = [],
-        private array $pickerAllowedOrigins = [],
-        private ?WorkspaceProvider $workspaces = null,
-        private ?WorkspaceOptionProviderInterface $workspaceOptions = null,
-        private bool $pickerLockResource = true,
+        private readonly FileManager $files,
+        private readonly EndpointUrlGeneratorInterface $urls,
+        private readonly CsrfTokenProviderInterface $csrf,
+        private readonly string $assetVersion,
+        private readonly Theme $theme,
+        private readonly array $ui,
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
+        private readonly ?RoleAuthorizationInterface $authorization = null,
+        private readonly array $securityStatusRoles = [],
+        private readonly array $pickerAllowedOrigins = [],
+        private readonly ?WorkspaceProvider $workspaces = null,
+        private readonly ?WorkspaceOptionProviderInterface $workspaceOptions = null,
+        private readonly bool $pickerLockResource = true,
     ) {
     }
 

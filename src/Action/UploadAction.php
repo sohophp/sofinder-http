@@ -15,13 +15,13 @@ use SohoPHP\SoFinder\Upload\UploadNamePolicy;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class UploadAction implements MutationActionInterface
+final class UploadAction implements MutationActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private MutationGuard $guard,
-        private UploadNamePolicy $names,
-        private ?AssetReferenceBuilder $assets = null,
+        private readonly FileManager $files,
+        private readonly MutationGuard $guard,
+        private readonly UploadNamePolicy $names,
+        private readonly ?AssetReferenceBuilder $assets = null,
     ) {
     }
 

@@ -8,12 +8,12 @@ use SohoPHP\SoFinder\Http\Action\DeleteTrashAction;
 use SohoPHP\SoFinder\Http\Action\RestoreTrashAction;
 use SohoPHP\SoFinder\Http\Action\TrashListAction;
 
-final readonly class TrashActions
+final class TrashActions
 {
     public function __construct(
-        public TrashListAction $list,
-        public RestoreTrashAction $restore,
-        public DeleteTrashAction $delete,
+        public readonly TrashListAction $list,
+        public readonly RestoreTrashAction $restore,
+        public readonly DeleteTrashAction $delete,
     ) {
     }
 }

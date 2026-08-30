@@ -36,19 +36,19 @@ use SohoPHP\SoFinder\Upload\UploadNamePolicy;
 use SohoPHP\SoFinder\Value\CapabilityCatalog;
 
 /** Shared construction of the baseline file-management HTTP use cases. */
-final readonly class StandardEndpointActions
+final class StandardEndpointActions
 {
     /** @param array<string,mixed> $configuration */
     public function __construct(
-        private FileManager $files,
-        private MetadataManager $metadata,
-        private AuthorizationInterface $authorization,
-        private CsrfTokenProviderInterface $csrf,
-        private UploadNamePolicy $uploadNames,
-        private array $configuration,
-        private ?ImageCapabilityProviderInterface $imageCapabilities = null,
-        private PluginRegistry $plugins = new PluginRegistry([]),
-        private CapabilityCatalog $capabilities = new CapabilityCatalog(),
+        private readonly FileManager $files,
+        private readonly MetadataManager $metadata,
+        private readonly AuthorizationInterface $authorization,
+        private readonly CsrfTokenProviderInterface $csrf,
+        private readonly UploadNamePolicy $uploadNames,
+        private readonly array $configuration,
+        private readonly ?ImageCapabilityProviderInterface $imageCapabilities = null,
+        private readonly PluginRegistry $plugins = new PluginRegistry([]),
+        private readonly CapabilityCatalog $capabilities = new CapabilityCatalog(),
     ) {
     }
 

@@ -6,9 +6,9 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
-final readonly class DocumentPreviewJobStatusAction implements EndpointActionInterface
+final class DocumentPreviewJobStatusAction implements EndpointActionInterface
 {
-    public function __construct(private DocumentPreviewJobService $service) {}
+    public function __construct(private readonly DocumentPreviewJobService $service) {}
     public function endpoint(): string { return 'sofinder_document_preview_job_status'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult
     {

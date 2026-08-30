@@ -8,12 +8,12 @@ use SohoPHP\SoFinder\Contract\EndpointUrlGeneratorInterface;
 use SohoPHP\SoFinder\Feature\FeaturePolicy;
 use SohoPHP\SoFinder\Preview\DocumentPreviewJobManager;
 
-final readonly class DocumentPreviewJobService
+final class DocumentPreviewJobService
 {
     public function __construct(
-        private DocumentPreviewJobManager $jobs,
-        private EndpointUrlGeneratorInterface $urls,
-        private FeaturePolicy $features = new FeaturePolicy(),
+        private readonly DocumentPreviewJobManager $jobs,
+        private readonly EndpointUrlGeneratorInterface $urls,
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
     ) {
     }
 

@@ -13,27 +13,27 @@ use SohoPHP\SoFinder\Plugin\PluginRegistry;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ConfigAction implements EndpointActionInterface
+final class ConfigAction implements EndpointActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private PluginRegistry $plugins,
+        private readonly FileManager $files,
+        private readonly PluginRegistry $plugins,
         /** @var array<string, array{width:int,height:int,quality:int}> */
-        private array $imagePresets = [],
-        private ?ImageCapabilityProviderInterface $imageCapabilities = null,
+        private readonly array $imagePresets = [],
+        private readonly ?ImageCapabilityProviderInterface $imageCapabilities = null,
         /** @var array{mode?:string,header?:bool,logo?:bool,search?:bool,language_switcher?:bool,view_switcher?:bool,folder_tree?:bool,scale?:string,upload_conflict_strategy?:string,lowercase_upload_extensions?:bool} */
-        private array $ui = [],
-        private FeaturePolicy $features = new FeaturePolicy(),
-        private bool $signedUrlsEnabled = false,
-        private int $signedUrlDefaultTtl = 300,
-        private int $signedUrlMaxTtl = 3600,
-        private bool $assetCatalogEnabled = false,
-        private bool $imageVariantsEnabled = false,
+        private readonly array $ui = [],
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
+        private readonly bool $signedUrlsEnabled = false,
+        private readonly int $signedUrlDefaultTtl = 300,
+        private readonly int $signedUrlMaxTtl = 3600,
+        private readonly bool $assetCatalogEnabled = false,
+        private readonly bool $imageVariantsEnabled = false,
         /** @var list<string> */
-        private array $assetAltLocales = ['en', 'zh-cn', 'zh-tw'],
-        private bool $assetSearchEnabled = true,
-        private bool $assetUsageEnabled = false,
-        private bool $assetAccessSessionsEnabled = false,
+        private readonly array $assetAltLocales = ['en', 'zh-cn', 'zh-tw'],
+        private readonly bool $assetSearchEnabled = true,
+        private readonly bool $assetUsageEnabled = false,
+        private readonly bool $assetAccessSessionsEnabled = false,
     ) {
     }
 

@@ -15,14 +15,14 @@ use SohoPHP\SoFinder\Http\UploadedFileInput;
 use SohoPHP\SoFinder\Upload\UploadNamePolicy;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class QuickUploadAction implements GuardedActionInterface
+final class QuickUploadAction implements GuardedActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private CompatibleUploadGuard $guard,
-        private UploadNamePolicy $names,
-        private ?ImageCapabilityProviderInterface $imageCapabilities = null,
-        private bool $overwriteOnUpload = false,
+        private readonly FileManager $files,
+        private readonly CompatibleUploadGuard $guard,
+        private readonly UploadNamePolicy $names,
+        private readonly ?ImageCapabilityProviderInterface $imageCapabilities = null,
+        private readonly bool $overwriteOnUpload = false,
     ) {
     }
 

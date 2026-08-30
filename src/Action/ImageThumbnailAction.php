@@ -6,9 +6,9 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Image\ImageManager;
 use SohoPHP\SoFinder\Value\RequestContext;
-final readonly class ImageThumbnailAction implements EndpointActionInterface
+final class ImageThumbnailAction implements EndpointActionInterface
 {
-    public function __construct(private ImageManager $images, private CachedFileResponseBuilder $responses = new CachedFileResponseBuilder()) {}
+    public function __construct(private readonly ImageManager $images, private readonly CachedFileResponseBuilder $responses = new CachedFileResponseBuilder()) {}
     public function endpoint(): string { return 'sofinder_image_thumbnail'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): StreamEndpointResult
     {

@@ -10,9 +10,9 @@ use SohoPHP\SoFinder\Http\MetadataPayload;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class MetadataGetAction implements EndpointActionInterface
+final class MetadataGetAction implements EndpointActionInterface
 {
-    public function __construct(private MetadataPayload $metadata)
+    public function __construct(private readonly MetadataPayload $metadata)
     {
     }
 

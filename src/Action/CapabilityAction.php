@@ -10,9 +10,9 @@ use SohoPHP\SoFinder\Value\CapabilityCatalog;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class CapabilityAction implements EndpointActionInterface
+final class CapabilityAction implements EndpointActionInterface
 {
-    public function __construct(private CapabilityCatalog $catalog)
+    public function __construct(private readonly CapabilityCatalog $catalog)
     {
     }
 

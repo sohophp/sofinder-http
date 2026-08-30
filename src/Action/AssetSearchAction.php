@@ -14,12 +14,12 @@ use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
-final readonly class AssetSearchAction implements EndpointActionInterface
+final class AssetSearchAction implements EndpointActionInterface
 {
     public function __construct(
-        private AssetSearchProviderInterface $search,
-        private WorkspaceProvider $workspaces,
-        private bool $enabled = true,
+        private readonly AssetSearchProviderInterface $search,
+        private readonly WorkspaceProvider $workspaces,
+        private readonly bool $enabled = true,
     ) {
     }
 

@@ -19,16 +19,16 @@ use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
-final readonly class ChunkUploadAction implements MutationActionInterface
+final class ChunkUploadAction implements MutationActionInterface
 {
     public function __construct(
-        private FileManager $files,
-        private ChunkUploadStoreInterface $chunks,
-        private MutationGuard $guard,
-        private UploadNamePolicy $names,
-        private ?MaintenanceCoordinator $maintenance = null,
-        private ?AssetReferenceBuilder $assets = null,
-        private ?WorkspaceProvider $workspaces = null,
+        private readonly FileManager $files,
+        private readonly ChunkUploadStoreInterface $chunks,
+        private readonly MutationGuard $guard,
+        private readonly UploadNamePolicy $names,
+        private readonly ?MaintenanceCoordinator $maintenance = null,
+        private readonly ?AssetReferenceBuilder $assets = null,
+        private readonly ?WorkspaceProvider $workspaces = null,
     ) {
     }
 

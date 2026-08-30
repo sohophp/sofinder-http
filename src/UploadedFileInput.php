@@ -8,15 +8,15 @@ use Psr\Http\Message\UploadedFileInterface;
 use SohoPHP\SoFinder\Exception\SoFinderException;
 
 /** A framework-neutral, single-consumer uploaded file passed into shared actions. */
-final readonly class UploadedFileInput
+final class UploadedFileInput
 {
-    private \Closure $opener;
+    private readonly \Closure $opener;
 
     /** @param callable():mixed $opener */
     public function __construct(
-        public string $clientName,
-        public int $size,
-        public int $error,
+        public readonly string $clientName,
+        public readonly int $size,
+        public readonly int $error,
         callable $opener,
     ) {
         $this->opener = \Closure::fromCallable($opener);

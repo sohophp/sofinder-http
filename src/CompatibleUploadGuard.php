@@ -9,9 +9,9 @@ use SohoPHP\SoFinder\Contract\CsrfTokenProviderInterface;
 use SohoPHP\SoFinder\Exception\AccessDeniedException;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class CompatibleUploadGuard
+final class CompatibleUploadGuard
 {
-    public function __construct(private AuthorizationInterface $authorization, private CsrfTokenProviderInterface $csrf)
+    public function __construct(private readonly AuthorizationInterface $authorization, private readonly CsrfTokenProviderInterface $csrf)
     {
     }
 

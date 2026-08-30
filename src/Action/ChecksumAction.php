@@ -11,11 +11,11 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ChecksumAction implements EndpointActionInterface
+final class ChecksumAction implements EndpointActionInterface
 {
     private const MAX_BYTES = 536_870_912;
 
-    public function __construct(private FileManager $files, private FeaturePolicy $features = new FeaturePolicy())
+    public function __construct(private readonly FileManager $files, private readonly FeaturePolicy $features = new FeaturePolicy())
     {
     }
 

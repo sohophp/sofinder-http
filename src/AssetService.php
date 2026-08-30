@@ -15,15 +15,15 @@ use SohoPHP\SoFinder\Value\AssetRecord;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
-final readonly class AssetService
+final class AssetService
 {
     public function __construct(
-        private FileManager $files,
-        private AssetReferenceBuilder $references,
-        private AssetCatalogInterface $catalog,
-        private WorkspaceProvider $workspaces,
-        private bool $enabled,
-        private ?AssetOperationPublisher $events = null,
+        private readonly FileManager $files,
+        private readonly AssetReferenceBuilder $references,
+        private readonly AssetCatalogInterface $catalog,
+        private readonly WorkspaceProvider $workspaces,
+        private readonly bool $enabled,
+        private readonly ?AssetOperationPublisher $events = null,
     ) {
     }
 

@@ -7,9 +7,9 @@ namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Asset\AssetOperationPublisher;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ImageMutationService
+final class ImageMutationService
 {
-    public function __construct(private ?AssetOperationPublisher $events = null)
+    public function __construct(private readonly ?AssetOperationPublisher $events = null)
     {
     }
 

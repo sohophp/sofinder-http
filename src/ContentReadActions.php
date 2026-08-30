@@ -7,9 +7,9 @@ namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Http\Action\ChecksumAction;
 use SohoPHP\SoFinder\Http\Action\TextPreviewAction;
 
-final readonly class ContentReadActions
+final class ContentReadActions
 {
-    public function __construct(public ChecksumAction $checksum, public TextPreviewAction $textPreview)
+    public function __construct(public readonly ChecksumAction $checksum, public readonly TextPreviewAction $textPreview)
     {
     }
 }

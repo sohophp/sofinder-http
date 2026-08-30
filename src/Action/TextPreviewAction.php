@@ -11,11 +11,11 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class TextPreviewAction implements EndpointActionInterface
+final class TextPreviewAction implements EndpointActionInterface
 {
     private const MAX_BYTES = 262_144;
 
-    public function __construct(private FileManager $files, private FeaturePolicy $features = new FeaturePolicy())
+    public function __construct(private readonly FileManager $files, private readonly FeaturePolicy $features = new FeaturePolicy())
     {
     }
 

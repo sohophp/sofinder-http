@@ -8,9 +8,9 @@ use SohoPHP\SoFinder\Http\Action\CancelChunkAction;
 use SohoPHP\SoFinder\Http\Action\ChunkStatusAction;
 use SohoPHP\SoFinder\Http\Action\ChunkUploadAction;
 
-final readonly class ChunkUploadActions
+final class ChunkUploadActions
 {
-    public function __construct(public ChunkStatusAction $status, public CancelChunkAction $cancel, public ?ChunkUploadAction $upload = null)
+    public function __construct(public readonly ChunkStatusAction $status, public readonly CancelChunkAction $cancel, public readonly ?ChunkUploadAction $upload = null)
     {
     }
 }

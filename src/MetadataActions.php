@@ -7,9 +7,9 @@ namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Http\Action\MetadataGetAction;
 use SohoPHP\SoFinder\Http\Action\MetadataUpdateAction;
 
-final readonly class MetadataActions
+final class MetadataActions
 {
-    public function __construct(public MetadataGetAction $get, public MetadataUpdateAction $update)
+    public function __construct(public readonly MetadataGetAction $get, public readonly MetadataUpdateAction $update)
     {
     }
 }

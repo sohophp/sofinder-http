@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Http\Action\ContentAction;
 use SohoPHP\SoFinder\Http\Action\DownloadAction;
-final readonly class ContentStreamActions
+final class ContentStreamActions
 {
-    public function __construct(public DownloadAction $download, public ContentAction $content) {}
+    public function __construct(public readonly DownloadAction $download, public readonly ContentAction $content) {}
 }

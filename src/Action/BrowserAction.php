@@ -10,9 +10,9 @@ use SohoPHP\SoFinder\Http\StreamEndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
 /** Framework-neutral HTML shell used by PSR-15 and framework-free hosts. */
-final readonly class BrowserAction implements EndpointActionInterface
+final class BrowserAction implements EndpointActionInterface
 {
-    public function __construct(private BrowserPage $page)
+    public function __construct(private readonly BrowserPage $page)
     {
     }
 

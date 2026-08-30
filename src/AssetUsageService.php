@@ -13,14 +13,14 @@ use SohoPHP\SoFinder\Value\AssetRecord;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Workspace\WorkspaceProvider;
 
-final readonly class AssetUsageService
+final class AssetUsageService
 {
     public function __construct(
-        private AssetCatalogInterface $catalog,
-        private AssetUsageStoreInterface $usages,
-        private WorkspaceProvider $workspaces,
-        private FileManager $files,
-        private bool $enabled,
+        private readonly AssetCatalogInterface $catalog,
+        private readonly AssetUsageStoreInterface $usages,
+        private readonly WorkspaceProvider $workspaces,
+        private readonly FileManager $files,
+        private readonly bool $enabled,
     ) {
     }
 

@@ -13,12 +13,12 @@ use SohoPHP\SoFinder\Metadata\MetadataManager;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class MetadataUpdateAction implements MutationActionInterface
+final class MetadataUpdateAction implements MutationActionInterface
 {
     public function __construct(
-        private MetadataManager $metadata,
-        private MetadataPayload $payload,
-        private MutationGuard $guard,
+        private readonly MetadataManager $metadata,
+        private readonly MetadataPayload $payload,
+        private readonly MutationGuard $guard,
     ) {
     }
 

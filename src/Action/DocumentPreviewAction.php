@@ -13,9 +13,9 @@ use SohoPHP\SoFinder\Preview\DocumentPreviewJobManager;
 use SohoPHP\SoFinder\Preview\DocumentPreviewManager;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class DocumentPreviewAction implements EndpointActionInterface
+final class DocumentPreviewAction implements EndpointActionInterface
 {
-    public function __construct(private DocumentPreviewManager $previews, private FeaturePolicy $features = new FeaturePolicy(), private ?DocumentPreviewJobManager $jobs = null) {}
+    public function __construct(private readonly DocumentPreviewManager $previews, private readonly FeaturePolicy $features = new FeaturePolicy(), private readonly ?DocumentPreviewJobManager $jobs = null) {}
     public function endpoint(): string { return 'sofinder_document_preview'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): StreamEndpointResult
     {

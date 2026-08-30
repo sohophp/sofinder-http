@@ -7,9 +7,9 @@ namespace SohoPHP\SoFinder\Http;
 use SohoPHP\SoFinder\Feature\FeaturePolicy;
 use SohoPHP\SoFinder\Metadata\MetadataManager;
 
-final readonly class MetadataPayload
+final class MetadataPayload
 {
-    public function __construct(private MetadataManager $metadata, private FeaturePolicy $features = new FeaturePolicy())
+    public function __construct(private readonly MetadataManager $metadata, private readonly FeaturePolicy $features = new FeaturePolicy())
     {
     }
 

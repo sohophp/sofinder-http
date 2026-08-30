@@ -15,18 +15,18 @@ use SohoPHP\SoFinder\Preview\DocumentPreviewManager;
 use SohoPHP\SoFinder\Security\ClamAvScanner;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class SecurityStatusAction implements EndpointActionInterface
+final class SecurityStatusAction implements EndpointActionInterface
 {
     /** @param list<string> $roles */
     public function __construct(
-        private bool $enabled,
-        private MalwareScanStatusStoreInterface $scans,
-        private ?ClamAvScanner $scanner = null,
-        private ?RoleAuthorizationInterface $authorization = null,
-        private array $roles = [],
-        private FeaturePolicy $features = new FeaturePolicy(),
-        private ?DocumentPreviewManager $documentPreviews = null,
-        private ?DocumentPreviewJobManager $documentPreviewJobs = null,
+        private readonly bool $enabled,
+        private readonly MalwareScanStatusStoreInterface $scans,
+        private readonly ?ClamAvScanner $scanner = null,
+        private readonly ?RoleAuthorizationInterface $authorization = null,
+        private readonly array $roles = [],
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
+        private readonly ?DocumentPreviewManager $documentPreviews = null,
+        private readonly ?DocumentPreviewJobManager $documentPreviewJobs = null,
     ) {
     }
 

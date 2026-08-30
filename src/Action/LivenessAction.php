@@ -8,7 +8,7 @@ use SohoPHP\SoFinder\Http\EndpointActionInterface;
 use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class LivenessAction implements EndpointActionInterface
+final class LivenessAction implements EndpointActionInterface
 {
     public function endpoint(): string
     {

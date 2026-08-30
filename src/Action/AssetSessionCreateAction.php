@@ -12,12 +12,12 @@ use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class AssetSessionCreateAction implements MutationActionInterface
+final class AssetSessionCreateAction implements MutationActionInterface
 {
     public function __construct(
-        private AssetAccessSessionManager $sessions,
-        private MutationGuard $guard,
-        private EndpointUrlGeneratorInterface $urls,
+        private readonly AssetAccessSessionManager $sessions,
+        private readonly MutationGuard $guard,
+        private readonly EndpointUrlGeneratorInterface $urls,
     ) {
     }
 

@@ -9,9 +9,9 @@ use SohoPHP\SoFinder\Image\ImageFormatRegistry;
 use SohoPHP\SoFinder\Value\Entry;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class EntryStreamResponseBuilder
+final class EntryStreamResponseBuilder
 {
-    public function __construct(private ImageFormatRegistry $imageFormats = new ImageFormatRegistry()) {}
+    public function __construct(private readonly ImageFormatRegistry $imageFormats = new ImageFormatRegistry()) {}
 
     /** @param resource $stream
      * @param array<string,string> $extraHeaders

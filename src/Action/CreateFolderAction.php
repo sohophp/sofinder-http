@@ -11,9 +11,9 @@ use SohoPHP\SoFinder\Http\MutationGuard;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class CreateFolderAction implements MutationActionInterface
+final class CreateFolderAction implements MutationActionInterface
 {
-    public function __construct(private FileManager $files, private MutationGuard $guard)
+    public function __construct(private readonly FileManager $files, private readonly MutationGuard $guard)
     {
     }
 

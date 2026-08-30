@@ -12,15 +12,15 @@ use SohoPHP\SoFinder\Metadata\MetadataManager;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class EntriesAction implements EndpointActionInterface
+final class EntriesAction implements EndpointActionInterface
 {
     private const MIN_PAGE_SIZE = 10;
     private const MAX_PAGE_SIZE = 500;
 
     public function __construct(
-        private FileManager $files,
-        private ?MetadataManager $metadata = null,
-        private FeaturePolicy $features = new FeaturePolicy(),
+        private readonly FileManager $files,
+        private readonly ?MetadataManager $metadata = null,
+        private readonly FeaturePolicy $features = new FeaturePolicy(),
     ) {
     }
 

@@ -14,13 +14,13 @@ use SohoPHP\SoFinder\Image\ImageManager;
 use SohoPHP\SoFinder\Value\OperationResult;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final readonly class ImageBatchAction implements MutationActionInterface
+final class ImageBatchAction implements MutationActionInterface
 {
     public function __construct(
-        private ImageManager $images,
-        private MutationGuard $guard,
-        private FeaturePolicy $features,
-        private ImageMutationService $operations,
+        private readonly ImageManager $images,
+        private readonly MutationGuard $guard,
+        private readonly FeaturePolicy $features,
+        private readonly ImageMutationService $operations,
     ) {
     }
 
