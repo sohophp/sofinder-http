@@ -20,6 +20,7 @@ use SohoPHP\SoFinder\Contract\MetricsStoreInterface;
 use SohoPHP\SoFinder\Contract\RoleAuthorizationInterface;
 use SohoPHP\SoFinder\Feature\FeaturePolicy;
 use SohoPHP\SoFinder\FileManager;
+use SohoPHP\SoFinder\ResourceRegistry;
 use SohoPHP\SoFinder\Health\HealthManager;
 use SohoPHP\SoFinder\Http\Action\ArchiveDownloadAction;
 use SohoPHP\SoFinder\Http\Action\AssetDeleteCheckAction;
@@ -50,6 +51,7 @@ use SohoPHP\SoFinder\Http\Action\MetricsAction;
 use SohoPHP\SoFinder\Http\Action\SecurityStatusAction;
 use SohoPHP\SoFinder\Http\Action\SignedContentAction;
 use SohoPHP\SoFinder\Http\Action\SignedUrlIssueAction;
+use SohoPHP\SoFinder\Http\Action\ShareLinkAction;
 use SohoPHP\SoFinder\Image\ImageManager;
 use SohoPHP\SoFinder\Maintenance\MaintenanceCoordinator;
 use SohoPHP\SoFinder\Preview\DocumentPreviewJobManager;
@@ -64,6 +66,7 @@ final class AdvancedEndpointActions
     /** @param array<string,mixed> $configuration */
     public function __construct(
         private readonly FileManager $files,
+        private readonly ResourceRegistry $resources,
         private readonly AuthorizationInterface $authorization,
         private readonly CsrfTokenProviderInterface $csrf,
         private readonly RoleAuthorizationInterface $roles,
@@ -88,6 +91,8 @@ final class AdvancedEndpointActions
         private readonly MalwareScanStatusStoreInterface $malwareScans,
         private readonly string $packageDirectory,
         private readonly array $configuration,
+        /** @var iterable<\SohoPHP\SoFinder\Contract\ShareLinkProviderInterface> */
+        private readonly iterable $shareLinkProviders = [],
     ) {
     }
 
@@ -113,6 +118,7 @@ final class AdvancedEndpointActions
             new CancelChunkAction($this->chunks, $guard, $this->workspaces),
             new ChunkStatusAction($this->files, $this->chunks, $this->workspaces),
             new SignedUrlIssueAction($this->signedUrls, $this->urls),
+            new ShareLinkAction($this->files, $this->resources, $this->signedUrls, $this->urls, (bool) ($this->configuration['signed_urls']['enabled'] ?? false), $this->shareLinkProviders),
             new SignedContentAction($this->signedUrls, $streams),
             new DocumentPreviewAction($this->previews, $features, $this->previewJobs),
             new DocumentPreviewJobCreateAction($jobService, $guard),

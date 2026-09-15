@@ -9,9 +9,16 @@ final class SecurityHeaders
 {
     public const CONTENT_SECURITY_POLICY = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: http: https:; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'";
 
-    /** @return array<string,string> */
-    public static function defaults(): array
+    /**
+     * @param list<string> $allowedImageOrigins
+     * @return array<string,string>
+     */
+    public static function defaults(bool $strictImageSources = false, array $allowedImageOrigins = []): array
     {
+        $imagePolicy = $strictImageSources
+            ? "img-src 'self' data: blob:" . ($allowedImageOrigins === [] ? '' : ' ' . implode(' ', $allowedImageOrigins))
+            : "img-src 'self' data: blob: http: https:";
+        $contentSecurityPolicy = str_replace("img-src 'self' data: blob: http: https:", $imagePolicy, self::CONTENT_SECURITY_POLICY);
         return [
             'X-Content-Type-Options' => 'nosniff',
             'X-Frame-Options' => 'SAMEORIGIN',
@@ -19,7 +26,7 @@ final class SecurityHeaders
             'Referrer-Policy' => 'no-referrer',
             'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=()',
             'Cross-Origin-Resource-Policy' => 'same-origin',
-            'Content-Security-Policy' => self::CONTENT_SECURITY_POLICY,
+            'Content-Security-Policy' => $contentSecurityPolicy,
         ];
     }
 }

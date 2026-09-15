@@ -38,6 +38,7 @@ final class BrowserPage
         private readonly ?WorkspaceProvider $workspaces = null,
         private readonly ?WorkspaceOptionProviderInterface $workspaceOptions = null,
         private readonly bool $pickerLockResource = true,
+        private readonly bool $productionStrict = false,
     ) {
     }
 
@@ -49,6 +50,13 @@ final class BrowserPage
         $selectMode = $request->query('CKEditorFuncNum') !== null || $this->boolean($request->query('select'));
         $mode = $this->enum($request, 'uiMode', ['auto', 'manager', 'picker'], (string) ($this->ui['mode'] ?? 'auto'));
         $resolvedMode = $mode === 'auto' ? ($selectMode ? 'picker' : 'manager') : $mode;
+        $profile = $this->enum($request, 'uiProfile', ['auto', 'standalone', 'embedded', 'picker'], 'auto');
+        if ($profile !== 'auto') {
+            $resolvedMode = $profile === 'picker' ? 'picker' : 'manager';
+            $selectMode = $profile === 'picker';
+        } else {
+            $profile = $resolvedMode === 'picker' ? 'picker' : ($this->boolean($request->query('uiEmbedded')) ? 'embedded' : 'standalone');
+        }
         $resource = $this->string($request->query('type'));
         $lockResource = $this->override($request, 'resourceLock', $this->pickerLockResource);
         $pickerResource = $resolvedMode === 'picker' && $resource !== '' && $lockResource ? $resource : null;
@@ -73,15 +81,18 @@ final class BrowserPage
             'securityStatusAvailable' => $this->features->enabled('security_status') && ($this->securityStatusRoles === [] || ($this->authorization !== null && array_filter($this->securityStatusRoles, $this->authorization->isGranted(...)) !== [])),
             'uiDefaults' => [
                 'scale' => (string) ($this->ui['scale'] ?? 'standard'),
+                'profile' => $profile,
                 'uploadConflictStrategy' => (string) ($this->ui['upload_conflict_strategy'] ?? 'ask'),
                 'lowercaseUploadExtensions' => (bool) ($this->ui['lowercase_upload_extensions'] ?? true),
                 'mode' => $resolvedMode,
+                'embedded' => $profile === 'embedded',
                 'header' => $this->override($request, 'uiHeader', (bool) ($this->ui['header'] ?? true)),
                 'logo' => $this->override($request, 'uiLogo', (bool) ($this->ui['logo'] ?? true)),
                 'search' => $this->override($request, 'uiSearch', (bool) ($this->ui['search'] ?? true)),
                 'languageSwitcher' => $this->override($request, 'uiLanguage', (bool) ($this->ui['language_switcher'] ?? true)),
                 'viewSwitcher' => $this->override($request, 'uiView', (bool) ($this->ui['view_switcher'] ?? true)),
                 'fullTools' => $this->enum($request, 'uiTools', ['common', 'full'], 'common') === 'full',
+                'securityProfile' => $this->productionStrict ? 'strict' : 'standard',
             ],
             'workspace' => $this->workspace($request),
         ];

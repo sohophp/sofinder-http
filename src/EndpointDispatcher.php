@@ -21,6 +21,8 @@ final class EndpointDispatcher implements RequestHandlerInterface
         private readonly ResponseFactoryInterface $responses,
         private readonly StreamFactoryInterface $streams,
         iterable $handlers,
+        private readonly bool $strictImageSources = false,
+        /** @var list<string> */ private readonly array $allowedImageOrigins = [],
     ) {
         foreach ($handlers as $handler) {
             $name = $handler->endpoint();
@@ -88,7 +90,7 @@ final class EndpointDispatcher implements RequestHandlerInterface
             $response = $response->withHeader('Cache-Control', 'no-store, private');
         }
 
-        foreach (SecurityHeaders::defaults() as $name => $value) {
+        foreach (SecurityHeaders::defaults($this->strictImageSources, $this->allowedImageOrigins) as $name => $value) {
             if (!$response->hasHeader($name)) {
                 $response = $response->withHeader($name, $value);
             }

@@ -167,7 +167,7 @@ final class LocalRuntime
         $names = new UploadNamePolicy((bool) $c['uploads']['naming']['lowercase_extensions']);
         $standard = new StandardEndpointActions($files, $metadata, $this->authorization, $this->csrf, $names, $c, $imagesProcessor);
         $advanced = new AdvancedEndpointActions(
-            $files, $this->authorization, $this->csrf, $this->roles, $chunks, $maintenance, $names, $workspaces,
+            $files, $resources, $this->authorization, $this->csrf, $this->roles, $chunks, $maintenance, $names, $workspaces,
             $imageManager, $references, $assetEvents, new ArchiveManager($files, $pathGuard, (string) $c['cache_dir']),
             new BoundedAssetSearchProvider($files, $catalog, (int) $c['asset_search']['max_scanned_entries']),
             $catalog, $assetUsages, $assetSessions, $previews, $previewJobs, $signed, $this->endpointUrls,
@@ -188,6 +188,7 @@ final class LocalRuntime
             array_values(array_filter((array) $c['picker']['allowed_origins'], 'is_string')),
             $workspaces,
             pickerLockResource: (bool) $c['picker']['lock_resource'],
+            productionStrict: (bool) $c['security']['production_strict'],
         ));
 
         return $this->actions = [$browser, ...$standard->all(), ...$advanced->all()];

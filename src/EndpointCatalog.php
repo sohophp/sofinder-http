@@ -45,6 +45,7 @@ final class EndpointCatalog
             ['sofinder_api_download', '/api/download', 'GET'],
             ['sofinder_api_content', '/api/content', 'GET'],
             ['sofinder_api_signed_url', '/api/signed-url', 'GET'],
+            ['sofinder_api_share_link', '/api/share-link', 'GET'],
             ['sofinder_signed_content', '/signed/{token}', 'GET'],
             ['sofinder_api_checksum', '/api/checksum', 'GET'],
             ['sofinder_api_text_preview', '/api/preview/text', 'GET'],
