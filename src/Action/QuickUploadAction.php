@@ -52,7 +52,9 @@ final class QuickUploadAction implements GuardedActionInterface
             throw new SoFinderException('Unable to inspect the uploaded file.', 'invalid_upload', 400);
         }
         $mime = (new \finfo(FILEINFO_MIME_TYPE))->buffer($sample) ?: 'application/octet-stream';
-        if ($selection === 'image' && ($this->imageCapabilities === null || !$this->imageCapabilities->isWebEmbeddable($mime))) {
+        $svg = strtolower((string) pathinfo($uploaded->clientName, PATHINFO_EXTENSION)) === 'svg'
+            && in_array($mime, ['image/svg+xml', 'text/xml', 'application/xml', 'text/plain'], true);
+        if ($selection === 'image' && !$svg && ($this->imageCapabilities === null || !$this->imageCapabilities->isWebEmbeddable($mime))) {
             fclose($stream);
 
             return $this->failure($function, $expectsJson, 'image_not_web_embeddable', 'This image format cannot be embedded directly in a web page.');
