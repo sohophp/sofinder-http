@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SohoPHP\SoFinder\Http\Action;
 
 use SohoPHP\SoFinder\Contract\ChunkUploadStoreInterface;
+use SohoPHP\SoFinder\Contract\ChunkUploadSessionGuardInterface;
 use SohoPHP\SoFinder\Exception\SoFinderException;
 use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Http\MutationActionInterface;
@@ -36,6 +37,14 @@ final class CancelChunkAction implements MutationActionInterface
     {
         $this->assertAllowed($context, $input);
         $id = $this->id($context, $input);
+        if ($this->chunks instanceof ChunkUploadSessionGuardInterface) {
+            return $this->chunks->withSessionLock($id, fn (): EndpointResult => $this->cancelLocked($context, $id));
+        }
+        return $this->cancelLocked($context, $id);
+    }
+
+    private function cancelLocked(RequestContext $context, string $id): EndpointResult
+    {
         $state = $this->chunks->status($id);
         if ((string) ($state['workspace'] ?? '') !== ($this->workspaces?->current($context)->id ?? '')) {
             throw new SoFinderException('The upload session does not belong to the current workspace.', 'upload_session_not_found', 404);

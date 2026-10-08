@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SohoPHP\SoFinder\Http\Action;
 
 use SohoPHP\SoFinder\Contract\ImageCapabilityProviderInterface;
+use SohoPHP\SoFinder\Contract\ImageActionProcessorInterface;
 use SohoPHP\SoFinder\Feature\FeaturePolicy;
 use SohoPHP\SoFinder\FileManager;
 use SohoPHP\SoFinder\Http\EndpointActionInterface;
@@ -52,6 +53,9 @@ final class ConfigAction implements EndpointActionInterface
             'imageCapabilities' => [
                 'driver' => $this->imageCapabilities?->driver() ?? '',
                 'formats' => $this->imageCapabilities?->capabilities() ?? [],
+                ...($this->imageCapabilities instanceof ImageActionProcessorInterface
+                    ? ['actions' => $this->imageCapabilities->supportedActions(),
+                        'resizeLimits' => $this->imageCapabilities->resizeLimits()] : []),
             ],
             'uiDefaults' => [
                 'scale' => (string) ($this->ui['scale'] ?? 'standard'),

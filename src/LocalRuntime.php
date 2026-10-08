@@ -19,6 +19,9 @@ use SohoPHP\SoFinder\Contract\CsrfTokenProviderInterface;
 use SohoPHP\SoFinder\Contract\DocumentPreviewDispatcherInterface;
 use SohoPHP\SoFinder\Contract\EndpointUrlGeneratorInterface;
 use SohoPHP\SoFinder\Contract\EntryUrlGeneratorInterface;
+use SohoPHP\SoFinder\Contract\FileInspectorDecoratorInterface;
+use SohoPHP\SoFinder\Contract\ImageProcessorInterface;
+use SohoPHP\SoFinder\Contract\ImageCapabilityProviderInterface;
 use SohoPHP\SoFinder\Contract\MaintenanceDispatcherInterface;
 use SohoPHP\SoFinder\Contract\RequestContextProviderInterface;
 use SohoPHP\SoFinder\Contract\RoleAuthorizationInterface;
@@ -77,6 +80,8 @@ final class LocalRuntime
         private readonly iterable $storageFactories = [],
         private readonly ?MaintenanceDispatcherInterface $maintenanceDispatcher = null,
         private readonly ?DocumentPreviewDispatcherInterface $documentPreviewDispatcher = null,
+        private readonly ?FileInspectorDecoratorInterface $fileInspectorDecorator = null,
+        private readonly ?ImageProcessorInterface $imageProcessor = null,
     ) {
     }
 
@@ -107,8 +112,19 @@ final class LocalRuntime
         $formats = new ImageFormatRegistry();
         $gd = new GdImageProcessor((int) $c['image_processing']['max_single_frame_pixels'], $formats);
         $imagick = new ImagickImageProcessor($formats);
-        $imagesProcessor = new HybridImageProcessor($formats, $gd, $imagick, (string) $c['image_processing']['driver']);
-        $uploads = new UploadPipeline(new DefaultFileInspector($imagesProcessor, $formats), (string) $c['quarantine_dir']);
+        $imagesProcessor = $this->imageProcessor ?? ($c['image_processing']['action_pipeline'] === null
+            ? new HybridImageProcessor($formats, $gd, $imagick, (string) $c['image_processing']['driver'])
+            : new \SohoPHP\SoFinder\Image\GdActionImageProcessor(new \SohoPHP\SoFinder\Image\ImageActionOptions($c['image_processing']['action_pipeline']), (int) $c['image_processing']['max_single_frame_pixels']));
+        if (!$imagesProcessor instanceof ImageCapabilityProviderInterface) {
+            throw new \InvalidArgumentException('A local runtime image processor must also expose image capabilities.');
+        }
+        $inspector = new DefaultFileInspector($imagesProcessor, $formats);
+        if ($c['uploads']['image_resize'] !== null) {
+            $inspector = new \SohoPHP\SoFinder\Security\ResizingFileInspector($inspector, $imagesProcessor,
+                new \SohoPHP\SoFinder\Image\ImageUploadResizeOptions($c['uploads']['image_resize']));
+        }
+        $inspector = $this->fileInspectorDecorator?->decorate($inspector, $imagesProcessor) ?? $inspector;
+        $uploads = new UploadPipeline($inspector, (string) $c['quarantine_dir']);
         $files = new FileManager(
             $resources, $this->authorization, $this->events, $pathGuard, $uploads, $this->entryUrls,
             $trash, $usage, new StoragePaginator(), $maintenance, $workspaces,

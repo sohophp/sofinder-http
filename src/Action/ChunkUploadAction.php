@@ -6,6 +6,7 @@ namespace SohoPHP\SoFinder\Http\Action;
 
 use SohoPHP\SoFinder\Asset\AssetReferenceBuilder;
 use SohoPHP\SoFinder\Contract\ChunkUploadStoreInterface;
+use SohoPHP\SoFinder\Contract\ChunkUploadSessionGuardInterface;
 use SohoPHP\SoFinder\Exception\SoFinderException;
 use SohoPHP\SoFinder\FileManager;
 use SohoPHP\SoFinder\Http\EndpointResult;
@@ -45,6 +46,15 @@ final class ChunkUploadAction implements MutationActionInterface
             throw new SoFinderException('No valid upload chunk was received.', 'invalid_upload_chunk', 400);
         }
         $id = $this->string($input['uploadId'] ?? null);
+        if ($this->chunks instanceof ChunkUploadSessionGuardInterface) {
+            return $this->chunks->withSessionLock($id, fn (): EndpointResult => $this->executeLocked($context, $input, $uploaded, $id));
+        }
+        return $this->executeLocked($context, $input, $uploaded, $id);
+    }
+
+    /** @param array<string,mixed> $input */
+    private function executeLocked(RequestContext $context, array $input, UploadedFileInput $uploaded, string $id): EndpointResult
+    {
         $resource = $this->string($input['resource'] ?? null, 'Files');
         $path = $this->string($input['path'] ?? null);
         $name = $this->names->normalize($this->string($input['name'] ?? null));
