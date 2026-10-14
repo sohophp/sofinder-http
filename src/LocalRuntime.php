@@ -179,6 +179,7 @@ final class LocalRuntime
         $assetSessions = new AssetAccessSessionManager(
             $catalog, $assetSessionsStore, $workspaces, $files, $resources, (bool) $c['asset_access_sessions']['enabled'],
             (int) $c['asset_access_sessions']['default_ttl_seconds'], (int) $c['asset_access_sessions']['max_ttl_seconds'], (int) $c['asset_access_sessions']['max_assets'],
+            roles: $this->roles,
         );
         $names = new UploadNamePolicy((bool) $c['uploads']['naming']['lowercase_extensions']);
         $standard = new StandardEndpointActions($files, $metadata, $this->authorization, $this->csrf, $names, $c, $imagesProcessor);

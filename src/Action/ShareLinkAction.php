@@ -14,7 +14,7 @@ use SohoPHP\SoFinder\Security\SignedUrlManager;
 use SohoPHP\SoFinder\Value\RequestContext;
 use SohoPHP\SoFinder\Value\ShareDescriptor;
 
-final class ShareLinkAction implements EndpointActionInterface
+final class ShareLinkAction implements \SohoPHP\SoFinder\Http\MutationActionInterface
 {
     /** @param iterable<ShareLinkProviderInterface> $providers */
     public function __construct(
@@ -23,6 +23,7 @@ final class ShareLinkAction implements EndpointActionInterface
         private readonly SignedUrlManager $signedUrls,
         private readonly EndpointUrlGeneratorInterface $urls,
         private readonly bool $signedUrlsEnabled,
+        private readonly \SohoPHP\SoFinder\Http\MutationGuard $guard,
         private readonly iterable $providers = [],
     ) {}
 
@@ -30,6 +31,7 @@ final class ShareLinkAction implements EndpointActionInterface
 
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult
     {
+        $this->assertAllowed($context, $input);
         $resourceName = $this->string($context->query('resource'), 'Files');
         $path = $this->string($context->query('path'));
         $entry = $this->files->entry($resourceName, $path);
@@ -52,6 +54,8 @@ final class ShareLinkAction implements EndpointActionInterface
 
         return new EndpointResult(['success' => true, 'data' => $descriptor->jsonSerialize()]);
     }
+
+    public function assertAllowed(RequestContext $context, array $input = []): void { $this->guard->assertAllowed($context, $input); }
 
     private function string(mixed $value, string $default = ''): string
     {

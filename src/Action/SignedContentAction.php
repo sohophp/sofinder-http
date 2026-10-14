@@ -13,6 +13,6 @@ final class SignedContentAction implements EndpointActionInterface
     public function execute(RequestContext $context = new RequestContext(), array $input = []): StreamEndpointResult
     {
         $value = $input['token'] ?? $context->attribute('token'); $token = is_scalar($value) || $value instanceof \Stringable ? (string) $value : ''; $opened = $this->signedUrls->open($token);
-        return $this->responses->build($context, $opened['resource'], $opened['entry'], $opened['stream'], $opened['disposition'], 'public, max-age=' . max(0, $opened['expiresAt'] - time()), ['Referrer-Policy' => 'no-referrer']);
+        return $this->responses->build($context, $opened['resource'], $opened['entry'], $opened['stream'], $opened['disposition'], 'private, no-store', ['Referrer-Policy' => 'no-referrer']);
     }
 }

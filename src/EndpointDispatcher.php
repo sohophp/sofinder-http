@@ -23,6 +23,7 @@ final class EndpointDispatcher implements RequestHandlerInterface
         iterable $handlers,
         private readonly bool $strictImageSources = false,
         /** @var list<string> */ private readonly array $allowedImageOrigins = [],
+        private readonly ?\SohoPHP\SoFinder\Security\RequestBudget $budget = null,
     ) {
         foreach ($handlers as $handler) {
             $name = $handler->endpoint();
@@ -51,8 +52,16 @@ final class EndpointDispatcher implements RequestHandlerInterface
             return $this->error('endpoint_not_implemented', 'The SoFinder endpoint is not implemented by this host.', 501);
         }
 
+        if (!in_array(strtoupper($request->getMethod()) === 'HEAD' ? 'GET' : strtoupper($request->getMethod()), EndpointCatalog::get($name)->methods, true)) return $this->error('method_not_allowed', 'The request method is not allowed.', 405, ['Allow' => implode(', ', EndpointCatalog::get($name)->methods)]);
         try {
-            return $this->secure($handler->handle($request));
+            $peer = $request->getServerParams()['REMOTE_ADDR'] ?? null;
+            $source = is_string($peer) && filter_var($peer, FILTER_VALIDATE_IP) !== false ? $peer : 'unknown';
+            $lease = $this->budget?->acquire($name, $source);
+            try {
+                return $this->secure($handler->handle($request));
+            } finally {
+                $this->budget?->release($lease);
+            }
         } catch (SoFinderException $exception) {
             $headers = [];
             if ($exception->httpStatus === 429) {

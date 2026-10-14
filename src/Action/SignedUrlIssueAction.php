@@ -11,12 +11,13 @@ use SohoPHP\SoFinder\Http\EndpointResult;
 use SohoPHP\SoFinder\Security\SignedUrlManager;
 use SohoPHP\SoFinder\Value\RequestContext;
 
-final class SignedUrlIssueAction implements EndpointActionInterface
+final class SignedUrlIssueAction implements \SohoPHP\SoFinder\Http\MutationActionInterface
 {
-    public function __construct(private readonly SignedUrlManager $signedUrls, private readonly EndpointUrlGeneratorInterface $urls) {}
+    public function __construct(private readonly SignedUrlManager $signedUrls, private readonly EndpointUrlGeneratorInterface $urls, private readonly \SohoPHP\SoFinder\Http\MutationGuard $guard) {}
     public function endpoint(): string { return 'sofinder_api_signed_url'; }
     public function execute(RequestContext $context = new RequestContext(), array $input = []): EndpointResult
     {
+        $this->assertAllowed($context, $input);
         $ttl = $context->query('ttl');
         if ($ttl !== null && (!is_string($ttl) || preg_match('/^\d+$/D', $ttl) !== 1)) {
             throw new SoFinderException('The signed URL lifetime must be an integer.', 'signed_url_ttl_invalid', 422);
@@ -24,5 +25,6 @@ final class SignedUrlIssueAction implements EndpointActionInterface
         $issued = $this->signedUrls->issue($this->string($context->query('resource'), 'Files'), $this->string($context->query('path')), is_string($ttl) ? (int) $ttl : null, $this->string($context->query('disposition'), 'attachment'));
         return new EndpointResult(['success' => true, 'data' => ['url' => $this->urls->generate('sofinder_signed_content', ['token' => $issued['token']], true), 'expiresAt' => $issued['expiresAt']]]);
     }
+    public function assertAllowed(RequestContext $context, array $input = []): void { $this->guard->assertAllowed($context, $input); }
     private function string(mixed $value, string $default = ''): string { return is_scalar($value) || $value instanceof \Stringable ? (string) $value : $default; }
 }

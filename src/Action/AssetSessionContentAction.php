@@ -35,7 +35,7 @@ final class AssetSessionContentAction implements EndpointActionInterface
             $opened['entry'],
             $opened['stream'],
             'inline',
-            'private, max-age=' . max(0, $opened['expiresAt'] - time()),
+            'private, no-store',
             ['Referrer-Policy' => 'no-referrer'],
         );
     }
