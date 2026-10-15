@@ -118,7 +118,7 @@ final class LocalRuntime
         if (!$imagesProcessor instanceof ImageCapabilityProviderInterface) {
             throw new \InvalidArgumentException('A local runtime image processor must also expose image capabilities.');
         }
-        $inspector = new DefaultFileInspector($imagesProcessor, $formats);
+        $inspector = new DefaultFileInspector($imagesProcessor, $formats, (bool) $c['security']['active_content_detection']);
         if ($c['uploads']['image_resize'] !== null) {
             $inspector = new \SohoPHP\SoFinder\Security\ResizingFileInspector($inspector, $imagesProcessor,
                 new \SohoPHP\SoFinder\Image\ImageUploadResizeOptions($c['uploads']['image_resize']));
